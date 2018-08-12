@@ -1,0 +1,39 @@
+<configuration>
+  <Property name="log_home" value="${AppLogs}" />
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${log_home}/baas.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>${log_home}/baas-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+      <maxFileSize>100MB</maxFileSize>
+      <maxHistory>60</maxHistory>
+      <totalSizeCap>20GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="org.springframework.boot" level="info"/>
+  <logger name="org.springframework.cloud" level="info"/>
+  <logger name="org.springframework.session" level="info"/>
+
+  <logger name="com.dianrong.blockchain.baas" level="debug"/>
+
+  <logger name="org.springframework.security.web" level="info"/>
+
+  <root level="error">
+    <appender-ref ref="ROLLING"/>
+    <appender-ref ref="STDOUT"/>
+  </root>
+</configuration>
